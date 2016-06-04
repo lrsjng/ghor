@@ -1,0 +1,28 @@
+{
+  "name": "ghor",
+  "version": "0.1.0",
+  "description": "Dependency injection tool.",
+  "homepage": "https://larsjung.de/ghor/",
+  "bugs": "https://github.com/lrsjng/ghor/issues",
+  "author": "Lars Jung <lrsjng@gmail.com> (https://larsjung.de)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lrsjng/ghor.git"
+  },
+  "main": "lib/ghor",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "node test/tests.js",
+    "cover": "isparta cover --dir coverage --report text --report html test/tests.js",
+    "check": "npm run -s lint && npm run -s test"
+  },
+  "devDependencies": {
+    "eslint": "2.11.1",
+    "isparta": "4.0.0",
+    "scar": "0.10.1"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  }
+}
