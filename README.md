@@ -6,6 +6,21 @@
 Dependency injection tool. Relies on the use of [ES6 Proxies][proxy].
 
 
+Example usage:
+
+```js
+const ghor = require('ghor');
+
+const resolve = ghor({
+    'a': ({b, c}) => 'A' + b + c
+    'b': () => 'B',
+    'c': ({b}) => 'C' + b
+});
+
+const a = resolve('a'); // === 'ABCB'
+```
+
+
 ## License
 The MIT License (MIT)
 

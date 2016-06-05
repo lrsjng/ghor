@@ -1,6 +1,6 @@
 {
   "name": "ghor",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Dependency injection tool.",
   "homepage": "https://larsjung.de/ghor/",
   "bugs": "https://github.com/lrsjng/ghor/issues",
