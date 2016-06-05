@@ -3,7 +3,7 @@
 [![license][license-img]][github] [![web][web-img]][web] [![github][github-img]][github] [![npm][npm-img]][npm]  
 [![version][npm-v-img]][npm] [![downloads][npm-dm-img]][npm] [![dependencies status][gemnasium-img]][gemnasium] [![build status][travis-img]][travis]
 
-Dependency injection tool.
+Dependency injection tool. Relies on the use of [ES6 Proxies][proxy].
 
 
 ## License
@@ -45,3 +45,5 @@ THE SOFTWARE.
 [npm-dm-img]: https://img.shields.io/npm/dm/ghor.svg?style=flat-square
 [gemnasium-img]: https://img.shields.io/gemnasium/lrsjng/ghor.svg?style=flat-square
 [travis-img]: https://img.shields.io/travis/lrsjng/ghor.svg?style=flat-square
+
+[proxy]: http://kangax.github.io/compat-table/es6/#test-Proxy
