@@ -1,3 +1,3 @@
 const {test} = require('scar');
-require('./lib/ghor');
+require('./ghor');
 test.cli();

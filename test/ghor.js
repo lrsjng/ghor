@@ -1,5 +1,5 @@
-const {test, assert} = require('scar');
-const ghor = require('../../lib/ghor');
+const {test, assert, spy} = require('scar');
+const ghor = require('../src/ghor');
 
 test('ghor is function', () => {
     assert.equal(typeof ghor, 'function');
@@ -108,19 +108,14 @@ test('ghor injects _resolve', () => {
 
 test('ghor runs function defs only once', () => {
     const obj = {};
-    let counter = 0;
-    const defs = {
-        a: () => {
-            counter += 1;
-            return obj;
-        }
-    };
+    const fn = spy(obj);
+    const defs = {a: fn};
     const g = ghor(defs);
-    assert.equal(counter, 0);
+    assert.equal(fn.calls.length, 0);
     assert.equal(g('a'), obj);
-    assert.equal(counter, 1);
+    assert.equal(fn.calls.length, 1);
     assert.equal(g('a'), obj);
-    assert.equal(counter, 1);
+    assert.equal(fn.calls.length, 1);
 });
 
 test('ghor insp works', () => {
@@ -144,10 +139,9 @@ test('ghor insp works', () => {
         ['res', 'c'],
         ['res', 'a']
     ];
-    const calls = [];
-    const insp = (...args) => calls.push(args);
-    const g = ghor(defs, insp);
-    assert.deepEqual(calls, []);
+    const fn = spy();
+    const g = ghor(defs, fn);
+    assert.deepEqual(fn.calls, []);
     g('a');
-    assert.deepEqual(calls, exp);
+    assert.deepEqual(fn.calls.map(call => call.args), exp);
 });
