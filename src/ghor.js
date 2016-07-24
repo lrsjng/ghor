@@ -1,8 +1,8 @@
-module.exports = (definitions, inspector) => {
-    const isFn = x => typeof x === 'function';
-    const isObj = x => typeof x === 'object';
-    const err = msg => {throw new Error(msg);};
+const isFn = x => typeof x === 'function';
+const isObj = x => x && typeof x === 'object';
+const err = msg => {throw new Error(msg);};
 
+module.exports = (definitions, inspector) => {
     if (!isFn(Proxy)) {
         err('ghor-no-proxy');
     }
@@ -17,22 +17,20 @@ module.exports = (definitions, inspector) => {
 
     const defs = Object.assign({}, definitions);
     const insts = {};
-    const stack = [];
 
-    const createProxy = fn => new Proxy({}, {get: (target, prop) => fn(prop)});
+    const resolver = fn => new Proxy({}, {get: (target, prop) => fn(prop)});
 
-    const resolve = id => {
+    const resolve = (id, stack = []) => {
         if (id === '_resolve') {
             return resolve;
         }
 
         if (stack.indexOf(id) >= 0) {
-            stack.push(id);
-            err('ghor-cycle: ' + stack.join(' > '));
+            err('ghor-cycle: ' + [...stack, id].join(' > '));
         }
 
-        stack.push(id);
-        inspector('req', id, [...stack]);
+        stack = [...stack, id];
+        inspector('req', id, stack);
 
         if (!insts.hasOwnProperty(id)) {
             if (!defs.hasOwnProperty(id)) {
@@ -41,10 +39,9 @@ module.exports = (definitions, inspector) => {
 
             inspector('ini', id);
             const def = defs[id];
-            insts[id] = isFn(def) ? def(createProxy(resolve)) : def;
+            insts[id] = isFn(def) ? def(resolver(i => resolve(i, stack))) : def;
         }
 
-        stack.pop();
         inspector('res', id);
         return insts[id];
     };

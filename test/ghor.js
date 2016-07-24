@@ -45,8 +45,8 @@ test('ghor resolves object definitions', () => {
     const defs = {
         a: obj
     };
-    const g = ghor(defs);
-    assert.equal(g('a'), obj);
+    const resolve = ghor(defs);
+    assert.equal(resolve('a'), obj);
 });
 
 test('ghor resolves function definitions', () => {
@@ -54,8 +54,8 @@ test('ghor resolves function definitions', () => {
     const defs = {
         a: () => obj
     };
-    const g = ghor(defs);
-    assert.equal(g('a'), obj);
+    const resolve = ghor(defs);
+    assert.equal(resolve('a'), obj);
 });
 
 test('ghor resolves transitive', () => {
@@ -64,8 +64,8 @@ test('ghor resolves transitive', () => {
         a: ({b} = {}) => b,
         b: obj
     };
-    const g = ghor(defs);
-    assert.equal(g('a'), obj);
+    const resolve = ghor(defs);
+    assert.equal(resolve('a'), obj);
 });
 
 test('ghor throws for circular deps', () => {
@@ -75,9 +75,9 @@ test('ghor throws for circular deps', () => {
         b: ({a} = {}) => null
         /* eslint-enable */
     };
-    const g = ghor(defs);
+    const resolve = ghor(defs);
     assert.throws(() => {
-        g('a');
+        resolve('a');
     }, /ghor-cycle: a > b > a/);
 });
 
@@ -92,9 +92,9 @@ test('ghor throws for long circular deps', () => {
         f: ({a} = {}) => null
         /* eslint-enable */
     };
-    const g = ghor(defs);
+    const resolve = ghor(defs);
     assert.throws(() => {
-        g('a');
+        resolve('a');
     }, /ghor-cycle: a > b > c > d > e > f > a/);
 });
 
@@ -102,19 +102,19 @@ test('ghor injects _resolve', () => {
     const defs = {
         a: ({_resolve} = {}) => _resolve
     };
-    const g = ghor(defs);
-    assert.equal(g('a'), g);
+    const resolve = ghor(defs);
+    assert.equal(resolve('a'), resolve);
 });
 
 test('ghor runs function defs only once', () => {
     const obj = {};
     const fn = spy(obj);
     const defs = {a: fn};
-    const g = ghor(defs);
+    const resolve = ghor(defs);
     assert.equal(fn.calls.length, 0);
-    assert.equal(g('a'), obj);
+    assert.equal(resolve('a'), obj);
     assert.equal(fn.calls.length, 1);
-    assert.equal(g('a'), obj);
+    assert.equal(resolve('a'), obj);
     assert.equal(fn.calls.length, 1);
 });
 
@@ -140,8 +140,8 @@ test('ghor insp works', () => {
         ['res', 'a']
     ];
     const fn = spy();
-    const g = ghor(defs, fn);
+    const resolve = ghor(defs, fn);
     assert.deepEqual(fn.calls, []);
-    g('a');
+    resolve('a');
     assert.deepEqual(fn.calls.map(call => call.args), exp);
 });

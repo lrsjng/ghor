@@ -1,5 +1,5 @@
 const {resolve, join} = require('path');
-const {ghu, includeit, jszip, mapfn, read, remove, run, uglify, webpack, wrap, write} = require('ghu');
+const {ghu, jszip, mapfn, read, remove, run, uglify, webpack, wrap, write} = require('ghu');
 
 const ROOT = resolve(__dirname);
 const SRC = join(ROOT, 'src');
@@ -45,7 +45,6 @@ ghu.task('build:script', runtime => {
 
     return read(`${SRC}/${runtime.pkg.name}.js`)
         .then(webpack(webpackConfig, {showStats: false}))
-        .then(includeit())
         .then(uglify({compressor: {warnings: false}}))
         .then(wrap(runtime.commentJs))
         .then(write(`${DIST}/${runtime.pkg.name}.min.js`, {overwrite: true}))
