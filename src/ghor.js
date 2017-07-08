@@ -1,17 +1,17 @@
-const isFn = x => typeof x === 'function';
-const isObj = x => x && typeof x === 'object';
+const is_fn = x => typeof x === 'function';
+const is_obj = x => x && typeof x === 'object';
 const err = msg => {throw new Error(msg);};
 
 module.exports = (definitions, inspector) => {
-    if (!isFn(Proxy)) {
+    if (!is_fn(Proxy)) {
         err('ghor-no-proxy');
     }
 
-    if (!isObj(definitions)) {
+    if (!is_obj(definitions)) {
         err('ghor-no-defs');
     }
 
-    if (!isFn(inspector)) {
+    if (!is_fn(inspector)) {
         inspector = () => null;
     }
 
@@ -39,7 +39,7 @@ module.exports = (definitions, inspector) => {
 
             inspector('ini', id);
             const def = defs[id];
-            insts[id] = isFn(def) ? def(resolver(i => resolve(i, stack))) : def;
+            insts[id] = is_fn(def) ? def(resolver(i => resolve(i, stack))) : def;
         }
 
         inspector('res', id);
