@@ -1,5 +1,5 @@
 const {resolve, join} = require('path');
-const {ghu, jszip, mapfn, read, remove, run, uglify, webpack, wrap, write} = require('ghu');
+const {ghu, jszip, mapfn, read, remove, uglify, webpack, wrap, write} = require('ghu');
 
 const ROOT = resolve(__dirname);
 const SRC = join(ROOT, 'src');
@@ -19,24 +19,23 @@ ghu.task('clean', () => {
     return remove(`${BUILD}, ${DIST}`);
 });
 
-ghu.task('lint', () => {
-    return run('eslint .', {stdio: 'inherit'});
-});
-
 ghu.task('build:script', runtime => {
     const webpackConfig = {
+        mode: 'none',
         output: {
             library: runtime.pkg.name,
-            libraryTarget: 'umd'
+            libraryTarget: 'umd',
+            umdNamedDefine: true,
+            globalObject: '(typeof self !== \'undefined\' ? self : this)'
         },
         module: {
-            loaders: [
+            rules: [
                 {
                     include: [SRC],
                     loader: 'babel-loader',
                     query: {
                         cacheDirectory: true,
-                        presets: ['es2015']
+                        presets: ['@babel/preset-env']
                     }
                 }
             ]
@@ -45,7 +44,7 @@ ghu.task('build:script', runtime => {
 
     return read(`${SRC}/${runtime.pkg.name}.js`)
         .then(webpack(webpackConfig, {showStats: false}))
-        .then(uglify({compressor: {warnings: false}}))
+        .then(uglify())
         .then(wrap(runtime.commentJs))
         .then(write(`${DIST}/${runtime.pkg.name}.min.js`, {overwrite: true}))
         .then(write(`${BUILD}/${runtime.pkg.name}-${runtime.pkg.version}.min.js`, {overwrite: true}));
