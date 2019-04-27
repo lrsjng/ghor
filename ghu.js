@@ -1,6 +1,8 @@
 const {resolve, join} = require('path');
 const {ghu, jszip, mapfn, read, remove, uglify, webpack, wrap, write} = require('ghu');
 
+const NAME = 'ghor';
+
 const ROOT = resolve(__dirname);
 const SRC = join(ROOT, 'src');
 const BUILD = join(ROOT, 'build');
@@ -20,30 +22,11 @@ ghu.task('clean', () => {
 });
 
 ghu.task('build:script', runtime => {
-    const webpackConfig = {
-        mode: 'none',
-        output: {
-            library: runtime.pkg.name,
-            libraryTarget: 'umd',
-            umdNamedDefine: true,
-            globalObject: '(typeof self !== \'undefined\' ? self : this)'
-        },
-        module: {
-            rules: [
-                {
-                    include: [SRC],
-                    loader: 'babel-loader',
-                    query: {
-                        cacheDirectory: true,
-                        presets: ['@babel/preset-env']
-                    }
-                }
-            ]
-        }
-    };
-
     return read(`${SRC}/${runtime.pkg.name}.js`)
-        .then(webpack(webpackConfig, {showStats: false}))
+        .then(webpack(webpack.cfg_umd(NAME, [SRC])))
+        .then(wrap(runtime.commentJs))
+        .then(write(`${DIST}/${runtime.pkg.name}.js`, {overwrite: true}))
+        .then(write(`${BUILD}/${runtime.pkg.name}-${runtime.pkg.version}.js`, {overwrite: true}))
         .then(uglify())
         .then(wrap(runtime.commentJs))
         .then(write(`${DIST}/${runtime.pkg.name}.min.js`, {overwrite: true}))

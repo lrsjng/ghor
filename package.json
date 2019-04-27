@@ -1,6 +1,6 @@
 {
   "name": "ghor",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "Dependency injection tool.",
   "homepage": "https://larsjung.de/ghor/",
   "bugs": "https://github.com/lrsjng/ghor/issues",
@@ -14,19 +14,19 @@
   "scripts": {
     "lint": "eslint .",
     "test": "node test",
-    "cover": "isparta cover --dir coverage --report text --report html test",
+    "cover": "nyc --require @babel/register --reporter text --reporter html node test",
     "check": "npm run -s lint && npm run -s test",
     "build": "node ghu release",
     "precommit": "npm run -s check && npm run -s build"
   },
   "devDependencies": {
-    "@babel/core": "7.4.0",
-    "@babel/preset-env": "7.4.2",
-    "babel-loader": "8.0.5",
+    "@babel/core": "7.4.4",
+    "@babel/preset-env": "7.4.4",
+    "@babel/register": "7.4.4",
     "eslint": "5.16.0",
-    "ghu": "0.15.0",
-    "isparta": "4.1.1",
-    "scar": "1.4.0"
+    "ghu": "0.19.0",
+    "nyc": "14.0.0",
+    "scar": "1.7.0"
   },
   "engines": {
     "node": ">=8.0.0"
