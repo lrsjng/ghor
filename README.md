@@ -1,7 +1,7 @@
 # ghor
 
 [![license][license-img]][github] [![web][web-img]][web] [![github][github-img]][github] [![npm][npm-img]][npm]  
-[![version][npm-v-img]][npm] [![downloads][npm-dm-img]][npm] [![build status][travis-img]][travis]
+[![version][npm-v-img]][npm] [![downloads][npm-dm-img]][npm]
 
 Dependency injection tool. Relies on the use of [ES6 Proxies][proxy].
 
@@ -24,7 +24,7 @@ const a = resolve('a'); // === 'ABCB'
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2019 Lars Jung (https://larsjung.de)
+Copyright (c) 2020 Lars Jung (https://larsjung.de)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -48,7 +48,6 @@ THE SOFTWARE.
 [web]: https://larsjung.de/ghor/
 [github]: https://github.com/lrsjng/ghor
 [npm]: https://www.npmjs.org/package/ghor
-[travis]: https://travis-ci.org/lrsjng/ghor
 
 [license-img]: https://img.shields.io/badge/license-MIT-a0a060.svg?style=flat-square
 [web-img]: https://img.shields.io/badge/web-larsjung.de/ghor-a0a060.svg?style=flat-square
@@ -57,6 +56,5 @@ THE SOFTWARE.
 
 [npm-v-img]: https://img.shields.io/npm/v/ghor.svg?style=flat-square
 [npm-dm-img]: https://img.shields.io/npm/dm/ghor.svg?style=flat-square
-[travis-img]: https://img.shields.io/travis/lrsjng/ghor.svg?style=flat-square
 
 [proxy]: http://kangax.github.io/compat-table/es6/#test-Proxy
